@@ -17,7 +17,7 @@ services:
       - DRONE_GITHUB_CLIENT_ID={OAuth Apps}
       - DRONE_GITHUB_CLIENT_SECRET={OAuth Apps}
       - DRONE_RUNNER_CAPACITY=2
-      - DRONE_SERVER_HOST=https://drone.example.com
+      - DRONE_SERVER_HOST={drone.example.com}
       - DRONE_SERVER_PROTO=https
       - DRONE_TLS_AUTOCERT=true
 
@@ -31,6 +31,6 @@ services:
     restart: always
     environment:
       - DRONE_RPC_SECRET=d{openssl rand -hex 16}
-      - DRONE_RPC_SERVER=https://drone.example.com
+      - DRONE_RPC_SERVER=http://drone-server
       - DRONE_RUNNER_CAPACITY=2
       - DRONE_RUNNER_NAME={hostname}
