@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  drone-server:
+    image: drone/drone
+    container_name: server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/drone:/data
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    environment:
+      - DRONE_RPC_SECRET=d{openssl rand -hex 16}
+      - DRONE_GITHUB_SERVER=https://github.com
+      - DRONE_GITHUB_CLIENT_ID={OAuth Apps}
+      - DRONE_GITHUB_CLIENT_SECRET={OAuth Apps}
+      - DRONE_RUNNER_CAPACITY=2
+      - DRONE_SERVER_HOST=https://drone.example.com
+      - DRONE_SERVER_PROTO=https
+      - DRONE_TLS_AUTOCERT=true
+
+  drone-agent:
+    image: drone/agent
+    container_name: agent
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - drone-server
+    restart: always
+    environment:
+      - DRONE_RPC_SECRET=d{openssl rand -hex 16}
+      - DRONE_RPC_SERVER=https://drone.example.com
+      - DRONE_RUNNER_CAPACITY=2
+      - DRONE_RUNNER_NAME={hostname}
